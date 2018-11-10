@@ -1,0 +1,63 @@
+{
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "xelatex",
+            "tools": [
+                "xelatex"
+            ]
+        },{
+            "name": "xelatex-full",
+            "tools": [
+                "xelatex",
+                "bibtex",
+                "xelatex",
+                "xelatex"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "--shell-escape",
+                "-output-directory=output",
+                "%DOC%"
+            ],
+            "command": "xelatex",
+            "name": "xelatex"
+        }
+    ],
+    "pasteImage.path": "${currentFileDir}/${currentFileNameWithoutExt}/image",
+    "latex-workshop.latex.outputDir": "./output",
+    "latex-workshop.view.pdf.viewer": "tab",
+    "editor.minimap.enabled": false
+}

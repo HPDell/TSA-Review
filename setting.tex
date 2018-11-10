@@ -1,0 +1,89 @@
+%------------------------------------------------------------------------------
+% Ctex
+%------------------------------------------------------------------------------
+\setcounter{secnumdepth}{5}
+\ctexset{
+    section = {
+        format = \Large\bfseries\raggedright
+    },
+    paragraph = {
+        % name = {(,)},
+        % number = \arabic{paragraph},
+        numbering = false,
+        % aftertitle = {\setcounter{subparagraph}{0}}
+    },
+    subparagraph = {
+        % name = {(,)},
+        % number = \alph{subparagraph},
+        numbering = false,
+        beforeskip = 0pt,
+        % aftername = {},
+        % indent = 0pt
+    }
+}
+
+%------------------------------------------------------------------------------
+% Unicode math
+%------------------------------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{unicode-math}
+\setmainfont{XITS}
+\setmathfont[bold-style = ISO]{XITS Math}
+
+
+%------------------------------------------------------------------------------
+% Minted
+%------------------------------------------------------------------------------
+\usepackage[outputdir=output]{minted}
+\setminted{
+    autogobble = true,
+    linenos=true,
+    frame=lines,
+    framesep=2mm,
+    fontsize=\scriptsize,
+    breaklines=true
+}
+\setminted[py]{
+    python3=true,
+}
+\setmintedinline{
+    fontsize=\normalsize
+}
+
+%------------------------------------------------------------------------------
+% Add new functions
+%------------------------------------------------------------------------------
+\usepackage{graphicx}
+\usepackage{subfig}
+% \usepackage{tikz}
+\usepackage{multicol}
+
+%------------------------------------------------------------------------------
+% Define new macros
+%------------------------------------------------------------------------------
+\newcommand{\diff}{\symrm{d }}
+\newcommand{\cpi}{\symrm{\pi}}
+\newcommand{\trans}{^\symrm{T}}
+\newcommand{\highlight}[1]{\textbf{\alert{#1}}}
+\newcommand{\done}{\ooalign{$\square$ \cr \raisebox{3pt}{\scriptsize{$√$}}}}
+\newcommand{\undone}{\ooalign{$\square$ \cr \raisebox{3pt}{}}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\ddfrac}[2]{\displaystyle{\frac{\displaystyle{#1}}{\displaystyle{#2}}}}
+
+%------------------------------------------------------------------------------
+% Format setting
+%------------------------------------------------------------------------------
+\usepackage[left=1.91cm, right=1.91cm, top=2.54cm, bottom=2.54cm]{geometry}
+\hypersetup{colorlinks=true,bookmarksnumbered=true}
+% \allowdisplaybreaks
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\setlength{\abovecaptionskip}{0cm}
+\setlength{\belowcaptionskip}{-0.5\baselineskip}
+\setlength{\abovedisplayskip}{0\baselineskip}
+\setlength{\belowdisplayskip}{0\baselineskip}
+% 调整图标标题格式
+\usepackage{caption}
+\captionsetup{labelfont=bf,labelsep=quad}

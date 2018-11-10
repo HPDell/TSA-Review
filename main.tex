@@ -1,0 +1,215 @@
+\documentclass[UTF8,hyperref,a4paper]{ctexart}
+    \input{setting}
+
+    \title{\textbf{时间序列分析复习整理}}
+    \author{\fangsong{胡奕公}}
+    \date{\kaishu{2018年9月22日}}
+
+    \begin{document}
+        \maketitle
+
+        \section{概念}
+
+        \paragraph{时间序列} 是指将某种现象某一个统计指标在不同时间
+        上的各个数值，按时间先后顺序排列而形成的序列。
+
+        \paragraph{随机过程}必须用一族随机变量才能刻画该随机现象的全部统计规律性。 
+        设 $ (\Omega, F, P) $ 是概率空间， $ T $ 是给定的参数集，若对每个 $ t \in T $ ，
+        都 有一个随机变量  $ X(t,\omega) $ 与之对应，则称随机变量族  $ \{ X(t,\omega), t \in T \} $ 
+        是 $ (\Omega, F, P) $ 上的随机过程，简记为随机过程 $ \{ X(t), t \in T \} $ 。
+        $ T $ 称为参数集，一般表示时间。
+
+        \paragraph{平稳性} 对其一切有限维分布函数随时间推移不发生改变的随机过程。
+        自然地，决定过程特性的统计规律不随时间的变化而改变。
+
+        \subparagraph{严平稳} 对于一切的时滞 $ k $ 和时点 $ t_1, t_2, \cdots, t_n $ ，
+        都有 $ Y_{t_1}, Y_{t_2},  \cdots, Y_{t_n} $ 与
+        $ Y_{t_{1−k}}, Y_{t_{2−k}}, \cdots, Y_{t_{n−k}}  $ 的联合分布相同。
+
+        \subparagraph{弱平稳} 均值函数在所有时间上恒为常数；
+        对所有的时间 $ t $ 和时滞  $ k $ ， $$ \gamma_{t,t-k} = \gamma_{0,k} $$
+
+        \paragraph{随机游动序列} 令 $ e_1, e_2, \cdots,  $ 为均值为 $ 0 $ ，方差 $ \sigma_e^2 $。
+        观测时间序列 $ \{ Y_t, t = 1,2,\cdots \} $ 为 $$ Y_t = e_1 + e_2 + \cdots + e_t $$ 
+        或 $$ Y_t = Y_{t-1} + e_t $$ 
+
+        \paragraph{滑动平均序列} 设 $ \{Y_t\} $  的构造如下
+        $$ Y_t = \frac{e_t + e_{t-1}}{2} $$ 
+
+        \paragraph{随机趋势} 随机游动序列似乎具有普通的上升趋势；然而，
+        \begin{itemize}
+            \item 随机游动在任何时间点都有零均值
+            \item 随机游动的方差随时间增加而增加
+            \item 对同一过程进行再次模拟可能会展现完全不同的“趋势”。
+        \end{itemize}
+
+        \paragraph{确定性趋势} 对同一过程进行再次模拟不会展现完全不同的“随机性”。
+
+        \paragraph{二阶矩过程} 设 $ {x(t)} $ 为一（实值或复值）随机过程，
+        且对每个 $  t ∈T, {x(t)}  $ 的 均值和方差都存在，则称 $ {x(t)} $ 为二阶矩过程。
+
+        \paragraph{一般线性过程} 成现在和过去白噪 声变量的加权线性组合
+        $$ Y_t = e_t + \psi_1 e_{t-1} + \psi_2 e_{t-2} + \cdots
+               = \sum_{j=-\infty}^\infty \psi_j e_{t-j} $$
+        
+        \paragraph{滑动平均过程}  $ q $ 阶滑动平均过程
+        $$ Y_t = e_t - \theta_1 e_{t-1} - \theta_2 e_{t-2} - \cdots - \theta_q e_{t-q} $$
+
+        \paragraph{自回归过程}  $ p $ 阶自回归过程
+        $$ Y_t = \phi_1 Y_{t-1} + \phi_2 Y_{t-2} + \cdots + \phi_p Y_{t-p} + e_t $$ 
+
+        \subparagraph{特征多项式} 
+        $$ \phi (x) = 1 - \phi_1 x - \phi_2 x^2 - \cdots - \phi_p x^p $$ 
+
+        \subparagraph{特征方程} 当且仅当 AR 特征方程的所有根都在单位圆外时，特征方程存在平稳解。
+        $$ 1 - \phi_1 x - \phi_2 x^2 - \cdots - \phi_p x^p = 0 $$
+
+        \paragraph{自回归滑动平均模型}  $ \mathrm{ARMA}(p,q) $
+        $$ Y_t = \phi_1 Y_{t-1} + \phi_2 Y_{t-2} + \cdots + \phi_p Y_{t-p} + e_t
+               - \theta_1 e_{t-1} - \theta_2 e_{t-2} - \cdots - \theta_q e_{t-q} $$ 
+        
+        \paragraph{可逆性} 滑动平均过程可以重新表示为自回归模型。
+
+        \paragraph{对数变换} 如果序列的散度变大似乎与序列值的增加有关联，
+        即序列的值越大，围绕该值的波动也越大。
+
+        \paragraph{幂变换} 只有对正值数据才可作幂变换，
+        对于有部分非负数据的序列，需整体加个正数使所有数据为正。
+        $$ g(x) = \left\{ \begin{array}{ll}
+            \frac{x^\lambda - 1}{\lambda} & \lambda \neq 0 \\
+            \log (x) & \lambda = 0
+        \end{array} \right. $$ 
+
+        \paragraph{样本自相关函数}
+        $$ r_k = \ddfrac{
+            \sum_{t=k+1}^n (Y_t - \bar{Y})(Y_{t-k} - \bar{Y})
+        }{
+            \sum _{t=1}^{n} (Y_t - \bar{Y})
+        } $$
+
+        \paragraph{样本偏自相关函数}
+        其为 $ Y_t $ 与 $ Y_{t−k} $ 之间的消除介入变量 $ Y_{t−1}, Y_{t−2}, \cdots, Y_{t−k+1}$
+        的影响后的相关系数函数。偏自相关函数即是预测误差之间的相关系数。
+        $$ \phi_{kk} = \ddfrac{
+            \rho_k - \sum _{j-1}^{k-1} \phi_{k-1,j} \rho_{k-j}
+        }{
+            1 - \sum _{j-1}^{k-1} \phi_{k-1,j} \rho_{j}
+        } $$ 
+        其中， $ \phi_{k,j} = \phi_{k-1,j} - \phi_{kk}\phi_{k-1,k-j}, j = 1, 2, k-1 $ 。
+
+        \paragraph{扩展的样本自相关系数} 设 
+        $$ W_{t,k,j} = Y_t - \tilde{\phi}_1 Y_{t-1} - \cdots - \tilde{\phi}_k Y_{t-k}  $$
+        为 AR 系数定义的自回归残差，其系数估值 $ \tilde{\phi} $ 是在设 AR 阶数为 $ k $ 、
+        MA 阶数为 $ j $ 时迭代估计所得， $ W_{t,k,j} $ 的样本自相关系数称为扩展的样本自相关系数。
+
+        \paragraph{ADF 检验} 用最小二乘回归所得估计系数的 $ t $ 统计量作为检验统计量，
+        在有单位根的零假设下，该检验统计量服从某种非标准的大样本分布。
+
+        \paragraph{AIC 准则} 估计模型与真实模型的平均 Kullback-Leibler 偏离的估计量，定义为
+        $$ \mathrm{AIC} = -2 \log(\mathrm{MLE}) + 2k $$
+        AIC 准则要求选择使 AIC 最小化的模型；
+        $ 2k $ 相当于一个“惩罚函数”，可避免过度参数化，确保选择简洁模型；
+        当模型包含常数项时，取 $ k = p + q + 1 $ ，否则取 $ k = p + q $。
+
+        \paragraph{修正的AIC准则} 在 AIC 中增加另一个非随机的惩罚项，使之近似消除 偏差。
+        定义为： $$ \mathrm{AIC_C} = \mathrm{AIC} + \frac{2(k+1)(k+2)}{n-k-2} $$
+
+        \paragraph{BIC 准则} BIC 准则确定 ARMA 模型阶数的方法是
+        选择一个能使 Schwarz 贝叶斯信息准则最小的模型。其定义为
+        $$ \mathrm{BIC} = -2 \log(\mathrm{MLE}) + k \log{n} $$
+
+        \paragraph{条件平方和函数} 最小二乘估计要优化的函数
+        $$ S_c(\phi, \mu) = \sum _{i=2}^{n} [(Y_t - \mu) - \phi (Y_{t-1} - \mu)]^2 $$
+        
+        \paragraph{无条件平方和函数} 似然函数的一部分
+        $$ S_(\phi, \mu) = \sum _{i=2}^{n} [(Y_t - \mu) - \phi (Y_{t-1} - \mu)]^2
+                         + (1 - \phi^2)(Y_1 - \mu) $$
+        
+        \paragraph{Box Pierce 统计量} 当估计为正确的 ARMA 模型时，对于大样本 $ n $ ，
+        $ Q $ 近似服从自由度为 $ K - p - q $ 的 $ \chi^2 $ 分布。
+        $$ Q = n(\hat{r}_1^2 + \hat{r}_2^2 + \cdots + \hat{r}_K^2) $$
+
+        \paragraph{Ljung Box 统计量} 
+        $$ Q_\star = n(n+2) \left( 
+            \frac{\hat{r}_1^2}{n-1} + \frac{\hat{r}_2^2}{n-2} + \cdots + \frac{\hat{r}_K^2}{n-K}
+        \right) $$ 
+
+        \paragraph{过度拟合} 识别并拟合出合适的模型之后，再拟合一个“接近”模型，
+        该模型以 原始模型为特例包容原始模型。如果
+        \begin{enumerate}
+            \item 额外的参数估计不显著地为 0； 
+            \item 共同的参数估计与原始的估计相比没有显著的改变。
+        \end{enumerate}
+        则认为时正确的模型。
+
+        \paragraph{最小方差预测} 预测均方误差最小。
+
+        \paragraph{确定性趋势预测} 简言之，预测既是将确定性时间趋势外推至未来时刻点上。
+        $$ \hat{Y}_t (l) = \mu_{t+l} $$
+        
+        \paragraph{ARMA 预测} 
+        \subparagraph{AR(1) 模型} $$ Y_t(l) = \phi^l (Y_t - \mu) + \mu $$ 
+        预测误差
+        $$ e_t(1) = Y_{t+1} - \hat{Y}_t(1) = e_{t+1} $$ 
+        $$ e_t(l) = e_{t+l} + \phi e_{t+l-1} + \cdots + \phi^{l-1} e_{t+1} $$ 
+        预测精度
+        $$ \Var [e_t(l)] = \sigma_e^2 \left[ \frac{1 - \Phi^{2l}}{1 - \phi^2} \right] \rightarrow \frac{\sigma_e^2}{1 - \phi^2} $$ 
+        
+        \subparagraph{MA(1) 模型} 一步预测及其误差为
+        $$ \hat{Y}_t(1) = \mu - \theta e_t $$
+        $$ e_t(1) = Y_{t+1} - \hat{Y}_t(1) = e_{t+1} $$
+        $ l $ 步预测为 $$ \hat{Y}_t(l) = \mu $$ 
+        误差为  $$ e_t(l) = e_{t+l} + \psi e_{t+l-1} + \cdots + \psi_{l-1} e_{t+1} $$ 
+        精度为 $$ \Var [e_t(l)] = \sigma_e^2 (1+\psi_1^2 + \psi_2^2 + \cdots + \phi_{l-1}^2) $$ 
+
+        \subparagraph{带漂移的随即游动} 预测
+        $$ \hat{Y}_t(l) = Y_t + \theta_0 l $$
+        误差 $$ e_t(l) = e_{t+1} + e_{t+2} + \cdots + e_{t+l} $$ 
+        精度 $$ \Var [e_t(l)] = l \sigma_e^2 $$ 
+
+        \subparagraph{ARMA 模型}
+
+        \paragraph{非平稳模型}
+
+        \paragraph{预测极限} 给定置信度水平 $ 1- \alpha $ ，可用标准正太百分位数 $ z_{1 - \alpha /2} $ 证明
+        $$ P \left( -z_{1-\alpha/2} < \ddfrac{Y_{t+l} - \hat{Y}_t(l)}{\sqrt{\Var(e_t(l))} < z_{1-\alpha/2}} \right) = 1 - \alpha $$ 
+        因此未来观测值 $ Y_{t+l} $ 落在观测极限 $ \hat{Y_t}(l) ± z_{1-\alpha/2}\sqrt{\Var(e_t(l))} $ 
+        中的置信度为 $ (1-\alpha) 100\% $
+        
+        \paragraph{乘法季节模型} 如 $ P = q = 1, p = Q = 0, s = 12 $ 的模型为
+        $$ Y_t = \Phi Y_{t - 12} + e_t - \theta e_{t - 1} $$
+
+        \paragraph{干预分析} 干预分析提供了对干预影响进行评估的框架，
+        干预是通过改变均值函数或趋势而影响过程，
+        干预可能改变时间序列的自协方差函数。
+
+        \paragraph{单一干预} 单一干预模型 $$ Y_t = m_t + N_t $$ 其中，
+        $ m_t $ 表示均值变化， $ N_t $ 表示均值函数变化。假设序列在 $ T $ 时刻发生干预，
+        当 $ t<T $ 时， $ m_t = 0 $ 。 $ \{Y_t, t < T\} $ 是预干预数据。
+
+        \paragraph{干预类型} 
+        \subparagraph{阶梯函数}  $ S_t^{(T)} = 1_{t \geqslant T} $ 
+        \subparagraph{脉冲函数}  $ P_t^{(T)} = S_t^{(T)} - S_{t-1}^{(T)} = 1_{t = T} $ 
+        
+        \paragraph{干预的影响}
+        \subparagraph{立即起效}  $ m_t = \omega S_t^{(T)} $ ，换为脉冲函数为短期干预。
+        \subparagraph{延迟起效}  $ m_t = \omega S_{t-d}^{(T)} $ 
+        \subparagraph{逐渐影响}  $ m_t = \delta m_{t-1} + \omega S_{t-d}^{(T)} $ 即
+        $$ m_t = 1_{t \geqslant T} \cdot \omega \frac{1 - \delta^{t-T}}{1 - \delta} $$ 
+        当 $ 1 - \delta^{t-T} = 0.5 $ 即 $ t = T + \frac{\log 0.5}{\log \delta} $  时，
+        $ m_t $ 达到极限变化值的一半， $ \frac{\log 0.5}{\log \delta} $ 称为半衰期。
+        $ \delta $ 越小，半衰期越小，系统越快达到极限变化值。换为脉冲函数即为逐渐消失的影响。
+
+        \paragraph{异常值} 不规则观测值，源于测量误差与复制误差其中之一或两者皆有，亦或过程突发短期性变化。 
+        \subparagraph{可加异常值}  $ Y'_t = Y_t + \omega_A P_t^{(T)} $ 
+        \subparagraph{新息异常值} $ e'_t = e_t + \omega_I P_t^{(T)} $ 
+
+        \paragraph{IO检验} 用于检验 $ T $ 时刻IO检验统计量为
+        $$ \lambda_{1,T} = \frac{a_t}{\sigma} $$ 
+        其中 $ a_t = Y'_t - \pi_1 Y'_{t-1} - \pi_2 Y'_{t-2} - \cdots $ 。
+        若序列只在 $ T $ 时刻有IO，则残差为 $ a_T = \omega_I + e_T $ ，其它情况下
+        $ a_t = e_t $ ，因此 $ \omega_l $ 可由 $ \hat{\omega}_I = a_t $ 来估计，方差为 $ \sigma^2 $ 。
+
+        \paragraph{AO检验} 
+
+    \end{document}
